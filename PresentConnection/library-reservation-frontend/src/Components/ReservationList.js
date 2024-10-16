@@ -9,7 +9,7 @@ const ReservationList = () => {
     useEffect(() => {
         const fetchReservations = async () => {
             try {
-                const response = await fetch(`http://localhost:5281/api/reservations`);
+                const response = await fetch(`http://localhost:5274/api/reservations`);
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch reservations');
@@ -65,7 +65,7 @@ const ReservationList = () => {
                                             ): <span className="quick-pickup-indicator">❌ No Quick Pickup</span>}
                                         </>
                                     )}
-                                    <div className="card-title">{reservation.bookName}</div> {/* Adjust field name */}
+                                    <div className="card-title">{reservation.bookName}</div> 
                                     <div className="card-date">
                                         Start Date: {new Date(reservation.startDate).toLocaleDateString()} <br />
                                         End Date: {new Date(reservation.endDate).toLocaleDateString()} 

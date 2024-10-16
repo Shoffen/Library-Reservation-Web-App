@@ -25,7 +25,8 @@ const BookList = () => {
                 });
 
                 
-                const response = await fetch(`http://localhost:5281/api/books?${queryParams.toString()}`);
+                const response = await fetch(`http://localhost:5274/api/book?${queryParams.toString()}`);
+
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch books');

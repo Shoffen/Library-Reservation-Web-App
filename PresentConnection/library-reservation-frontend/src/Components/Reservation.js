@@ -73,7 +73,7 @@ const Reservation = ({ isOpen, onClose, selectedBook }) => {
                 pickupCost: quickPickupCost.toString()
             });
 
-            const response = await fetch(`http://localhost:5281/api/reservations/calculatePrice?${queryParams.toString()}`);
+            const response = await fetch(`http://localhost:5274/api/reservations/calculatePrice?${queryParams.toString()}`);
 
             if (!response.ok) throw new Error('Network response was not ok');
 
@@ -93,40 +93,44 @@ const Reservation = ({ isOpen, onClose, selectedBook }) => {
             console.error('No selected book available.');
             return;
         }
-
-        const isAudiobook = audioModal;
+    
+      
         const reservationData = {
-            bookId: selectedBook.id,
-            startDate: dateRange[0].toISOString(), 
-            endDate: dateRange[1].toISOString(),   
-            isQuickPickup: quickPickup,
-            reservationCost: price,
+            BookId: selectedBook.id, 
+            StartDate: dateRange[0].toISOString(),
+            EndDate: dateRange[1].toISOString(),
+            IsQuickPickup: quickPickup,
+            ReservationCost: price,
             ImageUrl: selectedBook.imageUrl,
-            isAudiobook: audioModal
+            IsAudiobook: audioModal
         };
-
+        
+    
+        
+    
         try {
-            const response = await fetch('http://localhost:5281/api/reservations', {
+            const response = await fetch('http://localhost:5274/api/reservations', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(reservationData),
             });
-
+    
             if (!response.ok) {
                 const errorDetails = await response.text(); 
                 throw new Error(`Error creating reservation: ${errorDetails}`);
             }
-
+    
             const newReservation = await response.json();
-            console.log('Reservation created:', newReservation);
+            
             setConfirmationOpen(false); 
             handleClose(); 
         } catch (error) {
             console.error('Error submitting reservation:', error);
         }
     };
+    
 
     const formatDateRange = (dates) => {
         if (!dates[0] || !dates[1]) return '';
