@@ -1,9 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using LibraryReservationSystem.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LibraryReservationSystem.Data;
 
 namespace LibraryReservationSystem.Controllers
@@ -18,7 +14,7 @@ namespace LibraryReservationSystem.Controllers
         {
             _context = context;
 
-            // Ensure we have some seed data if the database is empty
+           
             if (!_context.Books.Any())
             {
                 _context.Books.AddRange(new List<Book>
@@ -31,7 +27,7 @@ namespace LibraryReservationSystem.Controllers
             }
         }
 
-        // GET: api/book
+       
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks(
             [FromQuery] string searchTerm = "", 
@@ -41,7 +37,7 @@ namespace LibraryReservationSystem.Controllers
         {
             var booksQuery = _context.Books.AsQueryable();
 
-            // Apply search filters based on user input
+           
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 booksQuery = booksQuery.Where(b => b.Name.ToLower().Contains(searchTerm.ToLower()));
@@ -59,27 +55,26 @@ namespace LibraryReservationSystem.Controllers
                 }
             }
 
-            // Filter logic for audiobooks and physical books
-    if (showAudiobooks && showPhysicalBooks)
-    {
-        // If both are true, do not filter out any books
-        // booksQuery remains unchanged
-    }
-    else if (showAudiobooks)
-    {
-        // Include books that are audiobooks, which can also be physical
-        booksQuery = booksQuery.Where(b => b.Audiobook);
-    }
-    else if (showPhysicalBooks)
-    {
-        // Include books that are physical books, which can also be audiobooks
-        booksQuery = booksQuery.Where(b => b.PhysicalBook);
-    }
-    else
-    {
-        // If both are false, return an empty list
-        return Ok(new List<Book>());
-    }
+           
+            if (showAudiobooks && showPhysicalBooks)
+            {
+            
+            }
+            else if (showAudiobooks)
+            {
+                
+                booksQuery = booksQuery.Where(b => b.Audiobook);
+            }
+            else if (showPhysicalBooks)
+            {
+                
+                booksQuery = booksQuery.Where(b => b.PhysicalBook);
+            }
+            else
+            {
+            
+                return Ok(new List<Book>());
+            }
 
             var books = await booksQuery.ToListAsync();
 

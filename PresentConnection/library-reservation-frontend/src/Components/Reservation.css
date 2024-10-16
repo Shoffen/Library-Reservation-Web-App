@@ -9,20 +9,35 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
     display: flex; 
     flex-direction: column; 
+    align-items: center; 
+    position: relative;
 }
 
 .close {
-    color: #aaa; 
-    float: right; 
-    font-size: 28px;
+    color: #333; 
+    font-size: 32px;
     font-weight: bold; 
+    position: absolute;
+    right: 20px; 
+    top: 10px; 
+    cursor: pointer; 
 }
 
 .close:hover,
 .close:focus {
-    color: black; 
-    text-decoration: none; 
-    cursor: pointer; 
+    color: #e74c3c; 
+}
+
+.reservation-layout {
+    display: flex; 
+    justify-content: center; 
+    width: 100%; 
+}
+
+.reservation-options, .reservation-summary {
+    flex: 1; 
+    padding: 20px;
+    text-align: center; 
 }
 
 .reserve-image {
@@ -30,78 +45,12 @@
     height: 240px; 
     object-fit: cover; 
     border-radius: 4px; 
-}
-
-.reservation-layout {
-    display: flex; 
-    justify-content: space-between; 
-}
-
-.reservation-options {
-    flex: 1; 
-    padding-right: 20px; 
-}
-
-.reservation-summary {
-    flex: 1; 
-    padding-left: 20px; 
-    border-left: 1px solid #eaeaea; 
+    margin-bottom: 15px; 
 }
 
 .price-display {
     margin-top: 20px; 
-}
-
-.reserve-button {
-    background-color: #4CAF50; 
-    color: white; 
-    padding: 10px 20px; 
-    border: none; 
-    border-radius: 4px; 
-    cursor: pointer; 
-    font-size: 16px; 
-}
-
-.reserve-button:hover {
-    background-color: #45a049; 
-}
-
-.modal-content-details {
-    margin-top: 20px; 
-    padding: 10px; 
-    background-color: #f9f9f9; 
-    border-radius: 4px; 
-}
-
-input[type="checkbox"] {
-    margin-right: 10px; 
-}
-
-.price-breakdown {
-    margin-top: 10px; 
-    font-size: 18px; 
-    font-weight: bold; 
-    color: #333; 
-    padding: 15px; 
-    background-color: #f1f1f1; 
-    border-radius: 4px; 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
-}
-
-.date-picker-container {
-    margin-top: 20px; 
-}
-
-.total-price-container {
-    display: flex;
-    flex-direction: column; 
-    align-items: center; 
-    margin-top: 15px; 
-}
-
-.total-price-label {
-    font-weight: bold; 
-    margin-bottom: 15px; 
+    text-align: center; 
 }
 
 .reserve-button {
@@ -111,5 +60,54 @@ input[type="checkbox"] {
     border: none; 
     border-radius: 5px; 
     cursor: pointer; 
+    font-size: 16px; 
     margin-top: 15px; 
+    width: auto; 
+    max-width: 200px; 
+}
+
+.reserve-button:hover {
+    background-color: #0056b3; 
+}
+
+.modal-content-details {
+    margin-top: 20px; 
+    padding: 10px; 
+    background-color: #f9f9f9; 
+    border-radius: 4px; 
+    width: 100%; 
+}
+
+.total-price-container {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    margin-top: 15px; 
+    width: 100%; 
+}
+
+.total-price-label {
+    font-weight: bold; 
+    margin-bottom: 15px; 
+    text-align: center; 
+}
+.price-breakdown {
+    margin-top: 10px; 
+    font-size: 18px; 
+    font-weight: bold; 
+    color: #333; 
+    padding: 15px; 
+    background-color: #f1f1f1; 
+    border-radius: 4px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    border: 1px solid #eaeaea; 
+}
+
+.discount-section {
+    margin-top: 5px; 
+    font-weight: normal;
+    color: #c0392b;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 4px; 
 }

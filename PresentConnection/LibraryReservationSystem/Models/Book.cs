@@ -7,7 +7,7 @@ public class Book
     public bool PhysicalBook { get; set; }
     public string ImageUrl { get; set; }
 
-    // Parameterless constructor
+  
     public Book() { }
 
     public Book(string name, int year, bool audiobook, bool physicalBook, string imageUrl)
