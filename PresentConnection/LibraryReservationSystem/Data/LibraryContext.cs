@@ -30,7 +30,7 @@ namespace LibraryReservationSystem.Data
                 
                 Books.AddRange(new List<Book>
                 {
-                    new Book { Name = "Metamorfozė", Year = 1925, Audiobook = true, PhysicalBook = false, ImageUrl = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjN4kbwat_hAakP5-OLaRykekLmcc_mL4VuD0hOU7pMGR_kLytLJV2FHMZSKe-rzBLzxXB7qIGPSt7mB1thk0A0X5yL85zbyAFX6nFqGiNnWsLl6mMeMmGOJO7DVeX_HIdVUK7I5BHsPH4/s1600/The-Metamorphosis-Kafka-Copy.png" },
+                    new Book {Name= "Metamorfozė", Year = 1925, Audiobook= true, PhysicalBook = false, ImageUrl = "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjN4kbwat_hAakP5-OLaRykekLmcc_mL4VuD0hOU7pMGR_kLytLJV2FHMZSKe-rzBLzxXB7qIGPSt7mB1thk0A0X5yL85zbyAFX6nFqGiNnWsLl6mMeMmGOJO7DVeX_HIdVUK7I5BHsPH4/s1600/The-Metamorphosis-Kafka-Copy.png" },
                     new Book { Name = "Metai", Year = 1949, Audiobook = false, PhysicalBook = true, ImageUrl = "https://thumb.knygos-static.lt/1dNdTshCHxFVyKxMFL0rxoPtYG0=/fit-in/0x800/filters:cwatermark(static/wm.png,500,75,30)/images/books/12399/1462877473_59.jpg" },
                     new Book { Name = "Dėdės ir dėdienės", Year = 1940, Audiobook = false, PhysicalBook = true, ImageUrl = "https://thumb.knygos-static.lt/cOoUepuTHfA2xVE4Q-oG-aOze_o=/fit-in/0x800/filters:cwatermark(static/wm.png,500,75,30)/images/books/20928/1462881899_img0018.jpg" },
                     new Book { Name = "Hamletas", Year = 1619, Audiobook = false, PhysicalBook = true, ImageUrl = "https://www.patogupirkti.lt/media/catalog/product/cache/1/image/1800x/040ec09b1e35df139433887a97daa66f/h/a/hamletas012.jpg" },

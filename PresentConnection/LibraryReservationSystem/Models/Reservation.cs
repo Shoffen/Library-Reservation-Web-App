@@ -23,7 +23,8 @@ namespace LibraryReservationSystem.Models
 
         [Required]
         [StringLength(255)]
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; } // Make ImageUrl nullable
+
 
         public bool IsAudiobook { get; set; }
 
