@@ -10,7 +10,7 @@ const audiobookRate = 2;
 const physicalBookRate = 3;
 
 const Reservation = ({ isOpen, onClose, selectedBook }) => {
-    const [modalType, setModalType] = useState(null); // Use a single state for modals
+    const [modalType, setModalType] = useState(null); 
     const [dateRange, setDateRange] = useState([null, null]);
     const [quickPickup, setQuickPickup] = useState(false);
     const [isConfirmationOpen, setConfirmationOpen] = useState(false);

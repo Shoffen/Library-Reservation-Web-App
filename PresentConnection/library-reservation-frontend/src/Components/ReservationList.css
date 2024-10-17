@@ -22,10 +22,10 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
 }
 .no-reservations-message {
-    display: flex;            /* Use flexbox for centering */
-    justify-content: center;  /* Center horizontally */
+    display: flex;            
+    justify-content: center;  
     
-    color: #333;             /* Optional: Change text color */
+    color: #333;             
 }
 
 h2 {

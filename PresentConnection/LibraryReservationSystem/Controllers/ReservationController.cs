@@ -1,8 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using LibraryReservationSystem.Data;
 using LibraryReservationSystem.Models;
-using LibraryReservationSystem.Repositories;
 using LibraryReservationSystem.Services;
 
 namespace LibraryReservationSystem.Controllers
