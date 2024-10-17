@@ -1,21 +1,21 @@
+using LibraryReservationSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace LibraryReservationSystem.Controllers
 {
-    [Route("api/[controller]")]
+
     [ApiController]
+    [Route("api/[controller]")]
     public class BookController : ControllerBase
     {
-        private readonly IBookRepository _bookRepository;
-
-        public BookController(IBookRepository bookRepository)
+        private readonly IBookService _bookService;
+        public BookController(IBookService bookService)
         {
-            _bookRepository = bookRepository;
+            _bookService = bookService;
         }
 
-        // GET: api/book
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks(
             [FromQuery] string searchTerm = "", 
@@ -25,7 +25,7 @@ namespace LibraryReservationSystem.Controllers
         {
             try
             {
-                var books = await _bookRepository.GetFilteredBooks(searchTerm, searchYear, showAudiobooks, showPhysicalBooks);
+                var books = await _bookService.GetFilteredBooks(searchTerm, searchYear, showAudiobooks, showPhysicalBooks);
                 return Ok(books);
             }
             catch (ArgumentException ex)
@@ -34,30 +34,24 @@ namespace LibraryReservationSystem.Controllers
             }
         }
 
-
-        // GET: api/book/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
         {
-            var book = await _bookRepository.GetBookById(id);
-
+            var book = await _bookService.GetBookByIdAsync(id);
             if (book == null)
             {
                 return NotFound();
             }
-
             return Ok(book);
         }
 
-        // POST: api/book
         [HttpPost]
         public async Task<ActionResult<Book>> CreateBook(Book newBook)
         {
-            await _bookRepository.AddBook(newBook);
+            await _bookService.AddBookAsync(newBook);
             return CreatedAtAction(nameof(GetBook), new { id = newBook.Id }, newBook);
         }
 
-        // PUT: api/book/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook(int id, Book updatedBook)
         {
@@ -68,11 +62,11 @@ namespace LibraryReservationSystem.Controllers
 
             try
             {
-                await _bookRepository.UpdateBook(updatedBook);
+                await _bookService.UpdateBookAsync(updatedBook);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (await _bookRepository.GetBookById(id) == null)
+                if (await _bookService.GetBookByIdAsync(id) == null)
                 {
                     return NotFound();
                 }
@@ -85,20 +79,21 @@ namespace LibraryReservationSystem.Controllers
             return NoContent();
         }
 
-        // DELETE: api/book/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
-            var book = await _bookRepository.GetBookById(id);
+            var book = await _bookService.GetBookByIdAsync(id);
 
             if (book == null)
             {
                 return NotFound();
             }
 
-            await _bookRepository.DeleteBook(book);
+            await _bookService.DeleteBookAsync(book);
 
             return NoContent();
         }
     }
+
+    
 }

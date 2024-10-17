@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using LibraryReservationSystem.Models;
 using LibraryReservationSystem.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryReservationSystem.Controllers
 {
@@ -8,24 +9,22 @@ namespace LibraryReservationSystem.Controllers
     [ApiController]
     public class ReservationsController : ControllerBase
     {
-        private readonly IReservationRepository _reservationRepository;
         private readonly IReservationService _reservationService;
 
-        public ReservationsController (IReservationRepository reservationRepository, IReservationService reservationService)
+        public ReservationsController(IReservationService reservationService)
         {
-            _reservationRepository = reservationRepository;
             _reservationService = reservationService;
         }
 
-        // GET: api/reservations
+      
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetReservations()
         {
-            
-            return await _reservationRepository.Get();
+            var reservations = await _reservationService.GetReservationsAsync();
+            return Ok(reservations);
         }
 
-        // POST: api/reservations/calculatePrice
+        
         [HttpGet("calculatePrice")]
         public ActionResult<double> CalculatePrice([FromQuery] int days, [FromQuery] bool isAudiobook, [FromQuery] bool quickPickup, [FromQuery] double serviceFee, [FromQuery] double pickupCost)
         {
@@ -33,19 +32,19 @@ namespace LibraryReservationSystem.Controllers
             return Ok(price);
         }
 
-        // POST: api/reservations
+        
         [HttpPost]
         public async Task<ActionResult<Reservation>> CreateReservation(Reservation reservation)
         {
-            await _reservationRepository.AddReservation(reservation);
+            await _reservationService.AddReservationAsync(reservation);
             return CreatedAtAction(nameof(GetReservation), new { id = reservation.Id }, reservation);
         }
 
-        // GET: api/reservation/{id}
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<Reservation>> GetReservation(int id)
         {
-            var reservation = await _reservationRepository.GetReservationById(id);
+            var reservation = await _reservationService.GetReservationByIdAsync(id);
 
             if (reservation == null)
             {
@@ -55,5 +54,47 @@ namespace LibraryReservationSystem.Controllers
             return Ok(reservation);
         }
 
+        
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteReservation(int id)
+        {
+            var reservation = await _reservationService.GetReservationByIdAsync(id);
+
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+
+            await _reservationService.DeleteReservationAsync(reservation);
+            return NoContent();
+        }
+
+       
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateReservation(int id, Reservation updatedReservation)
+        {
+            if (id != updatedReservation.Id)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                await _reservationService.UpdateReservationAsync(updatedReservation);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (await _reservationService.GetReservationByIdAsync(id) == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
     }
 }

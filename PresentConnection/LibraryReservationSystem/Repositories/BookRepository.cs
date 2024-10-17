@@ -8,6 +8,7 @@ namespace LibraryReservationSystem.Repositories
         private readonly LibraryContext _context;
 
         public BookRepository(LibraryContext _Context) =>
+        
             _context = _Context;
         public async Task AddBook(Book book)
         {

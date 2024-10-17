@@ -24,6 +24,8 @@ builder.Services.AddDbContext<LibraryContext>(options =>
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<IBookService, BookService>();  
+builder.Services.AddScoped<IBookRepository, BookRepository>();  
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
