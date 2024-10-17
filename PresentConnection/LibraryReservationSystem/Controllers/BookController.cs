@@ -8,26 +8,14 @@ namespace LibraryReservationSystem.Controllers
     [ApiController]
     public class BookController : ControllerBase
     {
-        private readonly LibraryContext _context;
+        private readonly IBookRepository _bookRepository;
 
-        public BookController(LibraryContext context)
+        public BookController(IBookRepository bookRepository)
         {
-            _context = context;
-
-           
-            if (!_context.Books.Any())
-            {
-                _context.Books.AddRange(new List<Book>
-                {
-                    new Book("The Great Gatsby", 1925, true, false, "https://example.com/gatsby.jpg"),
-                    new Book("1984", 1949, false, true, "https://example.com/1984.jpg"),
-                    new Book("To Kill a Mockingbird", 1960, true, true, "https://example.com/mockingbird.jpg")
-                });
-                _context.SaveChanges();
-            }
+            _bookRepository = bookRepository;
         }
 
-       
+        // GET: api/book
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks(
             [FromQuery] string searchTerm = "", 
@@ -35,50 +23,15 @@ namespace LibraryReservationSystem.Controllers
             [FromQuery] bool showAudiobooks = true, 
             [FromQuery] bool showPhysicalBooks = true)
         {
-            var booksQuery = _context.Books.AsQueryable();
-
-           
-            if (!string.IsNullOrEmpty(searchTerm))
+            try
             {
-                booksQuery = booksQuery.Where(b => b.Name.ToLower().Contains(searchTerm.ToLower()));
+                var books = await _bookRepository.GetFilteredBooks(searchTerm, searchYear, showAudiobooks, showPhysicalBooks);
+                return Ok(books);
             }
-
-            if (!string.IsNullOrEmpty(searchYear))
+            catch (ArgumentException ex)
             {
-                if (int.TryParse(searchYear, out int year))
-                {
-                    booksQuery = booksQuery.Where(b => b.Year.ToString().Contains(searchYear));
-                }
-                else
-                {
-                    return BadRequest("Invalid year format.");
-                }
+                return BadRequest(ex.Message);
             }
-
-           
-            if (showAudiobooks && showPhysicalBooks)
-            {
-            
-            }
-            else if (showAudiobooks)
-            {
-                
-                booksQuery = booksQuery.Where(b => b.Audiobook);
-            }
-            else if (showPhysicalBooks)
-            {
-                
-                booksQuery = booksQuery.Where(b => b.PhysicalBook);
-            }
-            else
-            {
-            
-                return Ok(new List<Book>());
-            }
-
-            var books = await booksQuery.ToListAsync();
-
-            return Ok(books);
         }
 
 
@@ -86,7 +39,7 @@ namespace LibraryReservationSystem.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
         {
-            var book = await _context.Books.FindAsync(id);
+            var book = await _bookRepository.GetBookById(id);
 
             if (book == null)
             {
@@ -100,9 +53,7 @@ namespace LibraryReservationSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<Book>> CreateBook(Book newBook)
         {
-            _context.Books.Add(newBook);
-            await _context.SaveChangesAsync();
-
+            await _bookRepository.AddBook(newBook);
             return CreatedAtAction(nameof(GetBook), new { id = newBook.Id }, newBook);
         }
 
@@ -115,15 +66,13 @@ namespace LibraryReservationSystem.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(updatedBook).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _bookRepository.UpdateBook(updatedBook);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_context.Books.Any(b => b.Id == id))
+                if (await _bookRepository.GetBookById(id) == null)
                 {
                     return NotFound();
                 }
@@ -140,15 +89,14 @@ namespace LibraryReservationSystem.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
-            var book = await _context.Books.FindAsync(id);
+            var book = await _bookRepository.GetBookById(id);
 
             if (book == null)
             {
                 return NotFound();
             }
 
-            _context.Books.Remove(book);
-            await _context.SaveChangesAsync();
+            await _bookRepository.DeleteBook(book);
 
             return NoContent();
         }
