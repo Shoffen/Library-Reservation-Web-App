@@ -11,7 +11,7 @@ namespace LibraryReservationSystem.Data
 
         public DbSet<Book> Books { get; set; }
 
-        // Add the DbSet for Reservations
+       
         public DbSet<Reservation> Reservations { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,7 +22,7 @@ namespace LibraryReservationSystem.Data
                 .HasMaxLength(255);
         }
 
-        // Method to seed data
+
         public void SeedData()
         {
             if (!Books.Any())
@@ -51,7 +51,7 @@ namespace LibraryReservationSystem.Data
                     new Book { Name = "Madagaskaras", Year = 1844, Audiobook = true, PhysicalBook = false, ImageUrl = "https://thumb.knygos-static.lt/tL0BwYfeHodWrBIFhOnb-AjEQoM=/fit-in/0x800/filters:cwatermark(static/wm.png,500,75,30)/images/books/759479/1462885690_img082.jpg" },
                     new Book { Name = "Lazda", Year = 1814, Audiobook = true, PhysicalBook = true, ImageUrl = "https://thumb.knygos-static.lt/tuutrSc-ZCnV0UeIZ94QVChfn6Y=/fit-in/0x800/filters:cwatermark(static/wm.png,500,75,30)/images/books/1156220/1656484821_Scan0001.jpg" },
                 });
-                SaveChanges(); // Save changes to the database
+                SaveChanges(); 
             }
         }
     }

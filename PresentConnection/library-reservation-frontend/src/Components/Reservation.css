@@ -111,3 +111,20 @@
     background-color: #fff;
     border-radius: 4px; 
 }
+.book-button {
+    display: block;             /* Make the button a block element */
+    margin: 20px auto;         /* Center the button and add vertical margin */
+    padding: 10px 20px;        /* Padding for the button */
+    background-color: #007BFF; /* Button background color */
+    color: white;               /* Text color */
+    border: none;               /* No border */
+    border-radius: 5px;        /* Rounded corners */
+    cursor: pointer;            /* Pointer cursor on hover */
+    font-size: 15px;           /* Font size */
+    transition: background-color 0.3s; /* Transition for hover effect */
+}
+
+/* Optional: Add a hover effect */
+.book-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}

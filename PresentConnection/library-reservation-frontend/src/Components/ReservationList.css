@@ -52,7 +52,8 @@ h2 {
 }
 
 .card-details {
-    flex-grow: 1; 
+    flex-grow: 1;
+    margin-left: 10%;
 }
 
 .card-title {
@@ -82,4 +83,11 @@ h2 {
     .book-image {
         margin-bottom: 10px; 
     }
+}
+
+
+.button-container {
+    display: flex;             
+    justify-content: center; 
+    margin: 20px 0;           
 }
