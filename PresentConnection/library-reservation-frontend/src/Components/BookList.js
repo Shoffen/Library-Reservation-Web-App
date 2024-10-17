@@ -6,27 +6,20 @@ import Reservation from './Reservation';
 const BookList = () => {
     const [books, setBooks] = useState([]);
     const [error, setError] = useState('');
-    const [searchTerm, setSearchTerm] = useState(''); 
-    const [searchYear, setSearchYear] = useState(''); 
-    const [showAudiobooks, setShowAudiobooks] = useState(true); 
-    const [showPhysicalBooks, setShowPhysicalBooks] = useState(true); 
+    const [filters, setFilters] = useState({
+        searchTerm: '',
+        searchYear: '',
+        showAudiobooks: true,
+        showPhysicalBooks: true,
+    });
     const [isModalOpen, setIsModalOpen] = useState(false); 
     const [selectedBook, setSelectedBook] = useState(null); 
 
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-               
-                const queryParams = new URLSearchParams({
-                    searchTerm: searchTerm || '',
-                    searchYear: searchYear || '',
-                    showAudiobooks: showAudiobooks.toString(),
-                    showPhysicalBooks: showPhysicalBooks.toString()
-                });
-
-                
+                const queryParams = new URLSearchParams(filters);
                 const response = await fetch(`http://localhost:5274/api/book?${queryParams.toString()}`);
-
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch books');
@@ -40,109 +33,76 @@ const BookList = () => {
             }
         };
 
-        // Fetch books whenever search or filter options change
         fetchBooks();
-    }, [searchTerm, searchYear, showAudiobooks, showPhysicalBooks]); 
+    }, [filters]); 
 
-    
-    const handleSearchInputChange = (event) => {
-        setSearchTerm(event.target.value);
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setFilters(prevFilters => ({
+            ...prevFilters,
+            [name]: value,
+        }));
     };
 
-    
-    const handleYearInputChange = (event) => {
-        setSearchYear(event.target.value);
+    const toggleFilter = (filterName) => {
+        setFilters(prevFilters => ({
+            ...prevFilters,
+            [filterName]: !prevFilters[filterName],
+        }));
     };
 
-    
-    const toggleAudiobookFilter = () => {
-        setShowAudiobooks(!showAudiobooks);
-    };
-
-    
-    const togglePhysicalBookFilter = () => {
-        setShowPhysicalBooks(!showPhysicalBooks);
-    };
-
-    
     const openModal = (book) => {
         setSelectedBook(book); 
         setIsModalOpen(true);  
     };
 
-    
     const closeModal = () => {
         setIsModalOpen(false); 
         setSelectedBook(null); 
     };
 
-    
     if (error) {
         return <div>Error: {error}</div>;
     }
 
     return (
         <div className="book-list">
-            
-            <div style={{ backgroundColor: '#f0f0f0', padding: '20px 0', textAlign: 'center' }}>
+            <div className="search-container">
                 <input
                     type="text"
+                    name="searchTerm"
                     placeholder="Search for a book..."
-                    value={searchTerm}
-                    onChange={handleSearchInputChange}
-                    style={{
-                        padding: '10px',
-                        fontSize: '16px',
-                        width: '300px',
-                        borderRadius: '8px',
-                        border: '1px solid #ddd',
-                        marginRight: '10px',
-                    }}
+                    value={filters.searchTerm}
+                    onChange={handleInputChange}
+                    className="search-input"
                 />
                 <input
                     type="text"
+                    name="searchYear"
                     placeholder="Search for a book year"
-                    value={searchYear}
-                    onChange={handleYearInputChange}
-                    style={{
-                        padding: '10px',
-                        fontSize: '16px',
-                        width: '300px',
-                        borderRadius: '8px',
-                        border: '1px solid #ddd',
-                        marginRight: '10px',
-                    }}
+                    value={filters.searchYear}
+                    onChange={handleInputChange}
+                    className="search-input"
                 />
                 <label>
                     <input
                         type="checkbox"
-                        checked={showAudiobooks}
-                        onChange={toggleAudiobookFilter}
+                        checked={filters.showAudiobooks}
+                        onChange={() => toggleFilter('showAudiobooks')}
                     />
                     Show Audiobooks
                 </label>
                 <label>
                     <input
                         type="checkbox"
-                        checked={showPhysicalBooks}
-                        onChange={togglePhysicalBookFilter}
+                        checked={filters.showPhysicalBooks}
+                        onChange={() => toggleFilter('showPhysicalBooks')}
                     />
                     Show Physical Books
                 </label>
                 
                 <Link to="/reservations">
-                    <button 
-                        style={{
-                            padding: '10px 20px',
-                            backgroundColor: '#007BFF',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '5px',
-                            cursor: 'pointer',
-                            marginLeft: '20px',
-                            fontSize: '15px',
-                        }}
-                    >
+                    <button className="reservations-button">
                         My Reservations
                     </button>
                 </Link>
@@ -158,12 +118,8 @@ const BookList = () => {
                         <div className="book-title">{book.name}</div>
                         <div className="book-year">{book.year}</div>
                         <div className="book-type">
-                            {book.audiobook && (
-                                <span className="audio-indicator">🎧 Audiobook</span>
-                            )}
-                            {book.physicalBook && (
-                                <span className="physical-indicator">📚 Physical Book</span>
-                            )}
+                            {book.audiobook && <span className="audio-indicator">🎧 Audiobook</span>}
+                            {book.physicalBook && <span className="physical-indicator">📚 Physical Book</span>}
                         </div>
                     </div>
                 ))}
@@ -171,7 +127,6 @@ const BookList = () => {
 
             {books.length === 0 && <p>No books found.</p>}
 
-            
             <Reservation 
                 isOpen={isModalOpen} 
                 onClose={closeModal} 

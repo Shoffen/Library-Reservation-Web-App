@@ -21,6 +21,12 @@ body {
     border-radius: 8px; 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
 }
+.no-reservations-message {
+    display: flex;            /* Use flexbox for centering */
+    justify-content: center;  /* Center horizontally */
+    
+    color: #333;             /* Optional: Change text color */
+}
 
 h2 {
     margin-bottom: 20px;
@@ -38,11 +44,14 @@ h2 {
     padding: 15px; 
     transition: box-shadow 0.3s; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    border: 2px solid #333; 
 }
-
+ 
 .reservation-card:hover {
+    border-color: #007BFF; 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
 }
+
 
 .book-image {
     width: 100px; 
@@ -90,4 +99,13 @@ h2 {
     display: flex;             
     justify-content: center; 
     margin: 20px 0;           
+}
+.button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
 }

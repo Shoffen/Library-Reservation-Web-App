@@ -31,23 +31,12 @@ const ReservationList = () => {
                 <h2>My Reservations</h2>
                 <div className="button-container">
                     <Link to="/">
-                        <button
-                            style={{
-                                padding: '10px 20px',
-                                backgroundColor: '#007BFF',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '5px',
-                                cursor: 'pointer',
-                                fontSize: '15px',
-                            }}>
-                            Book Library
-                        </button>
+                        <button className="button"> Book Library </button>
                     </Link>
                 </div>
                 {error && <p>Error: {error}</p>}
                 {reservations.length === 0 ? (
-                    <p>No reservations found.</p>
+                    <div className="no-reservations-message">No reservations found.</div>
                 ) : (
                     <div>
                         {reservations.map(reservation => (
